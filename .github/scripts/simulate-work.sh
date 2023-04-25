@@ -5,7 +5,7 @@ max=30
 counter=0
 while true;
 do
-    echo "Looping..."
+    echo "Looping....."
     if [[ $counter -le $max ]];
     then
         echo "$counter Events"
