@@ -9,4 +9,4 @@ jobs:
     steps:
       - uses: styfle/cancel-workflow-action@0.11.0
         with:
-          workflow_id: 479426
+          workflow_id: all
