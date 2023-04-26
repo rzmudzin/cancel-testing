@@ -1,7 +1,7 @@
 #!/bin/bash
 
 SLEEP_TIME=10
-max=9
+max=5
 counter=0
 while true;
 do
