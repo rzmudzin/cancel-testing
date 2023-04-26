@@ -37,7 +37,7 @@ jobs:
       uses: actions/checkout@v3
       with:
         access_token: ${{ github.token }}      
-    - name: Send greeting
+    - name: Simulate Work
       run: |
         echo "Hello ${{ github.event.inputs.name }}"
         pwd
