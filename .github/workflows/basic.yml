@@ -13,7 +13,9 @@ on:
     # Inputs the workflow accepts.
     inputs:
       target_action:
+        type: choice
         description: 'Action to execute'
+        default: "Uno"
         options:
         - "Uno"
         - "Dos"
