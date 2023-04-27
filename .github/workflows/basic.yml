@@ -13,11 +13,11 @@ on:
     # Inputs the workflow accepts.
     inputs:
       target_action:
-        # Friendly description to be shown in the UI instead of 'name'
         description: 'Action to execute'
-        # Default value if no value is explicitly provided
-        default: 'Uno'
-        # Input has to be provided for the workflow to run
+        options:
+        - "Uno"
+        - "Dos"
+        - "Tres"
         required: true
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -37,7 +37,7 @@ jobs:
       uses: actions/checkout@v3
       with:
         access_token: ${{ github.token }} 
-        selected_target: Dos
+        selected_target: ${{ github.event.inputs.target_action }}
     - name: Simulate Work
       run: |
         echo "Action Requested: ${{ github.event.inputs.target_action }}"
