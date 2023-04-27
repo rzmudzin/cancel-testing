@@ -12,11 +12,11 @@ on:
   workflow_dispatch:
     # Inputs the workflow accepts.
     inputs:
-      name:
+      target_action:
         # Friendly description to be shown in the UI instead of 'name'
-        description: 'Person to greet'
+        description: 'Action to execute'
         # Default value if no value is explicitly provided
-        default: 'World'
+        default: 'Uno'
         # Input has to be provided for the workflow to run
         required: true
 
@@ -36,10 +36,11 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
       with:
-        access_token: ${{ github.token }}      
+        access_token: ${{ github.token }} 
+        selected_taret: Dos
     - name: Simulate Work
       run: |
-        echo "Hello ${{ github.event.inputs.name }}"
+        echo "Action Requested: ${{ github.event.inputs.target_action }}"
         pwd
         ls -lah
         echo "Searching for script files"
