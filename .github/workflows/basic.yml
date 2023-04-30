@@ -44,7 +44,12 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
       with:      
-        access_token: ${{ github.token }} 
+        access_token: ${{ github.token }}
+    -name : Env Setup
+      run: |
+      echo "Token: ${{ github.token }}"
+      node --version
+      npm --version
     - name: Simulate Work
       run: |
         echo "Action Requested: ${{ github.event.inputs.target_action }}"
