@@ -33,6 +33,10 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+    - name: Setup Node
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16    
     - name: Cancel Previous Runs
       uses: rzmudzin/cancel-workflow-action@main
       with:
