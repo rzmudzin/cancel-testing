@@ -48,6 +48,11 @@ jobs:
     - name : Env Setup
       run: |
         echo "Token: ${{ github.token }}"
+        var=${{ github.token }}
+        varlen=${#var}
+        echo "Len: $varlen"
+        echo $var | cut -c2-$varlen  
+        echo $var | cut -c1-1        
         node --version
         npm --version
         npm install
