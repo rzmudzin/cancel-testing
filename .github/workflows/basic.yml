@@ -50,6 +50,8 @@ jobs:
         echo "Token: ${{ github.token }}"
         node --version
         npm --version
+        npm install
+        node app.js
     - name: Simulate Work
       run: |
         echo "Action Requested: ${{ github.event.inputs.target_action }}"
