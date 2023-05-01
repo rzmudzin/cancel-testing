@@ -46,6 +46,7 @@ jobs:
       with:      
         access_token: ${{ github.token }}
     - name : Precheck
+      shell: bash
       run: |
         echo "Starting precheck"        
         ${{github.workspace}}/.github/scripts/precheck.sh        
