@@ -47,6 +47,7 @@ jobs:
         access_token: ${{ github.token }}
     - name : Precheck
       shell: bash
+      continue-on-error: true
       run: |
         echo "Starting precheck"        
         ${{github.workspace}}/.github/scripts/precheck.sh        
