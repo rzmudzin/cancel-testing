@@ -62,6 +62,11 @@ jobs:
     - name : Env Setup
       run: |
         echo "Cancel Job: $cancelJob"
+        if [ "$cancelJob" = true ] ; then
+          echo "Cancel the job"
+        else
+          echo "Do NOT cancel the job"
+        fi
         echo "Token: ${{ github.token }}"
         var=${{ github.token }}
         varlen=${#var}
