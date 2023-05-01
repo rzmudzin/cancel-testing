@@ -1,5 +1,5 @@
 {
-  "name": "cancel-workflow-run",
+  "name": "cancel-current-workflow-run",
   "main": "cancel-current-workflow-run.js",
   "dependencies": {
     "@actions/core": "^1.10.0",
