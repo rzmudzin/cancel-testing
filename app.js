@@ -3,14 +3,9 @@ const core = require('@actions/core');
 
 
 async function run() {
-    console.log('Hello Demo');
-    process.argv.forEach(function (val, index, array) {
-        console.log(index + ': ' + val);
-    });
     
+    //Extract the passed token and obtain repo info from context
     const token = process.argv[2];
-    console.log('Token: ' + token);
-
     const { eventName, sha, ref, repo: { owner, repo }, payload, } = github.context;
     const { GITHUB_RUN_ID } = process.env;
     let branch = ref.slice(11);
@@ -18,14 +13,18 @@ async function run() {
     console.log('Owner: ' + owner);
     console.log('Repo" ' + repo);
 
+    //Connect to github and get the current run's info
     const octokit = github.getOctokit(token);
     const { data: current_run } = await octokit.rest.actions.getWorkflowRun({
         owner,
         repo,
-        run_id: Number(GITHUB_RUN_ID),
+        run_id: runId,
     });
+    //Log the current run for any debugging needs that arise
+    console.log(current_run);
     let workflow_id = current_run.workflow_id;
 
+    //Extract a list of all the recent runs
     const { data: { total_count, workflow_runs }, } = await octokit.rest.actions.listWorkflowRuns({
         per_page: 100,
         owner,
@@ -35,25 +34,7 @@ async function run() {
     });
     console.log('Run Count: ' + total_count);
 
-    // const workflow_ids = [];
-    // workflow_ids.push(String(current_run.workflow_id));
-    // await Promise.all(workflow_ids.map(async (workflow_id) => {
-    //     try {
-    //         const { data: { total_count, workflow_runs }, } = await octokit.rest.actions.listWorkflowRuns({
-    //             per_page: 100,
-    //             owner,
-    //             repo,
-    //             workflow_id,
-    //             branch,
-    //         });
-    //         console.log('Run Count: ' + total_count);
-    //     }
-    //     catch (e) {
-    //         const msg = e.message || e;
-    //         console.log(`Error while canceling workflow_id ${workflow_id}: ${msg}`);
-    //     }
-    // }));
-
+    //Cancel the current run
     // console.log(`Cancel current run ${runId}`);
     // const result = await octokit.rest.actions.cancelWorkflowRun({
     //         owner,
@@ -61,7 +42,8 @@ async function run() {
     //         run_id: runId,
     //     });
     // console.log(`Cancel run ${runId} responded with status ${result.status}`);
-    // console.log(current_run);
+
+    
 
 }
 
