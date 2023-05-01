@@ -25,7 +25,8 @@ async function run() {
         repo,
         run_id: Number(GITHUB_RUN_ID),
     });
-
+    const workflow_ids = [];
+    workflow_ids.push(String(current_run.workflow_id));
     await Promise.all(workflow_ids.map(async (workflow_id) => {
         try {
             const { data: { total_count, workflow_runs }, } = await octokit.rest.actions.listWorkflowRuns({
