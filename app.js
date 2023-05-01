@@ -9,10 +9,10 @@ async function run() {
     
     //Extract the passed token and obtain repo info from context
     const token = process.argv[2];
-    const { eventName, sha, ref, repo: { owner, repo }, payload, } = github.context;
     const { GITHUB_RUN_ID } = process.env;
-    let branch = ref.slice(11);
+    const { eventName, sha, ref, repo: { owner, repo }, payload, } = github.context;
     let runId = Number(GITHUB_RUN_ID);
+    let branch = ref.slice(11);
     console.log('Owner: ' + owner);
     console.log('Repo" ' + repo);
 
@@ -23,11 +23,12 @@ async function run() {
         repo,
         run_id: runId,
     });
-    //Log the current run for any debugging needs that arise
-    // console.log(current_run);
+    // console.log(current_run);    //Uncomment to log the current run for any debugging needs that arise
+    
+    let workflow_name = current_run.name;
     let workflow_id = current_run.workflow_id;
     let status = current_run.status;
-    console.log('Run id ' + runId + ' from workflow ' + workflow_id + ' has a status of ' + status);
+    console.log('Run id ' + runId + ' from workflow ' + workflow_name + ' has a status of ' + status);
 
     //Extract a list of all the recent runs
     const { data: { total_count, workflow_runs }, } = await octokit.rest.actions.listWorkflowRuns({
@@ -48,7 +49,7 @@ async function run() {
         });
     console.log(`Cancel run ${runId} responded with status ${result.status}`);
 
-    //Poll for 1 minute
+    //Poll for run status, force an exit if we have not been canceled after 1 minute
     for(var i=0; i<12; ++i) {
         console.log(i);
         await delay(5000);
@@ -57,8 +58,9 @@ async function run() {
             repo,
             run_id: runId,
         });
-        console.log('Run id ' + runId + ' from workflow ' + workflow_id + ' has a status of ' + runInfo.status);
+        console.log('Cancel of run id ' + runId + ' from workflow ' + workflow_id + ' pending. Current run status ' + runInfo.status);
     }
+    process.exit(11);
 
 }
 
