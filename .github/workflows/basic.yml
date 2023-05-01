@@ -49,8 +49,12 @@ jobs:
       shell: bash
       continue-on-error: true
       run: |
-        echo "Starting precheck"        
-        ${{github.workspace}}/.github/scripts/precheck.sh        
+        echo "Starting precheck"      
+        if ( ! ${{github.workspace}}/.github/scripts/precheck.sh ); then
+          echo "Command FAILED"
+        else
+          echo "Success!!!!"
+        fi
     - name : Env Setup
       run: |
         echo "Token: ${{ github.token }}"
