@@ -35,6 +35,7 @@ async function run() {
     console.log('Token: ' + token);
     const { eventName, sha, ref, repo: { owner, repo }, payload, } = github.context;
     const { GITHUB_RUN_ID } = process.env;
+    let runId = Number(GITHUB_RUN_ID);
     let branch = ref.slice(11);
     const octokit = github.getOctokit(token);
     const { data: current_run } = await octokit.rest.actions.getWorkflowRun({
@@ -42,14 +43,13 @@ async function run() {
         repo,
         run_id: Number(GITHUB_RUN_ID),
     });
-    // const { data: pullRequest } = await octokit.rest.pulls.get({
-    //     owner: 'octokit',
-    //     repo: 'rest.js',
-    //     pull_number: 123,
-    //     mediaType: {
-    //         format: 'diff'
-    //     }
-    // });
+    console.log(`Cancel current run ${runId}`);
+    const result = await octokit.rest.actions.cancelWorkflowRun({
+            owner,
+            repo,
+            run_id: runId,
+        });
+    console.log(`Cancel run ${runId} responded with status ${result.status}`);
     console.log(current_run);
 
     var moment = require('moment');
