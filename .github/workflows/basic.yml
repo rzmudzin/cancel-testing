@@ -53,7 +53,7 @@ jobs:
         echo "Starting precheck"      
         if ( ! ${{github.workspace}}/.github/scripts/precheck.sh ); then
           echo "Command FAILED"
-          env.cancelJob = true
+          cancelJob = true
         else
           echo "Success!!!!"
         fi
