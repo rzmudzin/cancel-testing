@@ -1,9 +1,8 @@
 {
-  "name": "test-app",
-  "main": "app.js",
+  "name": "cancel-workflow-run",
+  "main": "cancel-current-workflow-run.js",
   "dependencies": {
     "@actions/core": "^1.10.0",
-    "@actions/github": "^5.1.1",
-    "moment": "^2.29.4"
+    "@actions/github": "^5.1.1"
   }
 }
