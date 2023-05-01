@@ -31,12 +31,18 @@ async function run() {
     process.argv.forEach(function (val, index, array) {
         console.log(index + ': ' + val);
     });
+    //const token = "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";
     const token = process.argv[2];
     console.log('Token: ' + token);
+
     const { eventName, sha, ref, repo: { owner, repo }, payload, } = github.context;
     const { GITHUB_RUN_ID } = process.env;
-    let runId = Number(GITHUB_RUN_ID);
     let branch = ref.slice(11);
+    let runId = Number(GITHUB_RUN_ID);
+    console.log('Owner: ' + ownser);
+    console.log('Repo" ' + repo);
+
+    // let runId = 0;
     const octokit = github.getOctokit(token);
     const { data: current_run } = await octokit.rest.actions.getWorkflowRun({
         owner,
