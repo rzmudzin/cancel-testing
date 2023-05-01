@@ -1,0 +1,88 @@
+# This is a basic workflow that is manually triggered
+
+name: Simulated workflow
+
+# Controls when the action will run. Workflow runs when manually triggered using the UI
+# or API.
+on:
+  push:
+    branches: [ "main" ]
+  #pull_request:
+  #  branches: [ "main" ]
+  workflow_dispatch:
+    # Inputs the workflow accepts.
+    inputs:
+      target_action:
+        type: choice
+        description: 'Action to execute'
+        default: "Uno"
+        options:
+        - "Uno"
+        - "Dos"
+        - "Tres"
+        required: true
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "greet"
+  Simulate-Work:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    - name: Setup Node
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16    
+    - name: Cancel Previous Runs
+      uses: rzmudzin/cancel-workflow-action@main
+      with:
+        selected_target: ${{ github.event.inputs.target_action }}      
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:      
+        access_token: ${{ github.token }}
+    - name : Precheck
+      shell: bash
+      continue-on-error: true
+      run: |
+        echo "Starting precheck"      
+        cancelJob=false
+        if ( ! ${{github.workspace}}/.github/scripts/precheck.sh ); then
+          echo "Command FAILED"
+          cancelJob=true
+        else
+          echo "Success!!!!"
+        fi
+        echo "cancelJob=$cancelJob" >> $GITHUB_ENV
+        echo "Precheck Completed"
+    - name : Env Setup
+      run: |
+        echo "Cancel Job: $cancelJob"
+        if [ "$cancelJob" = true ] ; then
+          echo "Cancel the job"
+        else
+          echo "Do NOT cancel the job"
+        fi
+        echo "Token: ${{ github.token }}"
+        var=${{ github.token }}
+        varlen=${#var}
+        echo "Len: $varlen"
+        echo $var | cut -c2-$varlen  
+        echo $var | cut -c1-1        
+        node --version
+        npm --version
+        npm install
+        node cancel-current-workflow-run.js ${{ github.token }}
+    - name: Simulate Work
+      run: |
+        echo "Action Requested: ${{ github.event.inputs.target_action }}"
+        pwd
+        ls -lah
+        echo "Searching for script files"
+        find . -name simulate-work.sh
+        echo "Search Complete"
+        ${{github.workspace}}/.github/scripts/simulate-work.sh
