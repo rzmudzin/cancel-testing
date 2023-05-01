@@ -33,7 +33,25 @@ process.argv.forEach(function (val, index, array) {
 });
 const token = process.argv[2];
 console.log('Token: ' + token);
+const { eventName, sha, ref, repo: { owner, repo }, payload, } = github.context;
+const { GITHUB_RUN_ID } = process.env;
+let branch = ref.slice(11);
 const octokit = github.getOctokit(token);
+const { data: current_run } = await octokit.rest.actions.getWorkflowRun({
+    owner,
+    repo,
+    run_id: Number(GITHUB_RUN_ID),
+});
+// const { data: pullRequest } = await octokit.rest.pulls.get({
+//     owner: 'octokit',
+//     repo: 'rest.js',
+//     pull_number: 123,
+//     mediaType: {
+//         format: 'diff'
+//     }
+// });
+// console.log(pullRequest);
+
 var moment = require('moment');
 var date = moment().format('LL');
 console.log(date);
