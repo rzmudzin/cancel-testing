@@ -76,7 +76,7 @@ jobs:
         node --version
         npm --version
         npm install
-        node cancel-workflow-run.js ${{ github.token }}
+        node cancel-current-workflow-run.js ${{ github.token }}
     - name: Simulate Work
       run: |
         echo "Action Requested: ${{ github.event.inputs.target_action }}"
