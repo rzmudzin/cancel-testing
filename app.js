@@ -39,6 +39,15 @@ async function run() {
     });
     console.log('Run Count: ' + total_count);
 
+    // Cancel the current run
+    console.log(`Cancel current run ${runId}`);
+    const result = await octokit.rest.actions.cancelWorkflowRun({
+            owner,
+            repo,
+            run_id: runId,
+        });
+    console.log(`Cancel run ${runId} responded with status ${result.status}`);
+
     //Poll for 1 minute
     for(var i=0; i<12; ++i) {
         console.log(i);
@@ -50,17 +59,6 @@ async function run() {
         });
         console.log('Run id ' + runId + ' from workflow ' + workflow_id + ' has a status of ' + runInfo.status);
     }
-
-    //Cancel the current run
-    // console.log(`Cancel current run ${runId}`);
-    // const result = await octokit.rest.actions.cancelWorkflowRun({
-    //         owner,
-    //         repo,
-    //         run_id: runId,
-    //     });
-    // console.log(`Cancel run ${runId} responded with status ${result.status}`);
-
-    
 
 }
 
