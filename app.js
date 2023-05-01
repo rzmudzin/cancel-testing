@@ -39,7 +39,7 @@ async function run() {
     const { GITHUB_RUN_ID } = process.env;
     let branch = ref.slice(11);
     let runId = Number(GITHUB_RUN_ID);
-    console.log('Owner: ' + ownser);
+    console.log('Owner: ' + owner);
     console.log('Repo" ' + repo);
 
     // let runId = 0;
