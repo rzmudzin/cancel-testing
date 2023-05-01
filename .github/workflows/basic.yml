@@ -37,6 +37,10 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: 16    
+    - name : Precheck
+      run: |
+        echo "Starting precheck"        
+        ${{github.workspace}}/.github/scripts/precheck.sh
     - name: Cancel Previous Runs
       uses: rzmudzin/cancel-workflow-action@main
       with:
