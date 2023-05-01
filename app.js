@@ -12,9 +12,6 @@ async function run() {
     const { GITHUB_RUN_ID } = process.env;
     const { eventName, sha, ref, repo: { owner, repo }, payload, } = github.context;
     let runId = Number(GITHUB_RUN_ID);
-    let branch = ref.slice(11);
-    console.log('Owner: ' + owner);
-    console.log('Repo" ' + repo);
 
     //Connect to github and get the current run's info
     const octokit = github.getOctokit(token);
@@ -28,10 +25,10 @@ async function run() {
     let workflow_name = current_run.name;
     let workflow_id = current_run.workflow_id;
     let status = current_run.status;
-    console.log('Run id ' + runId + ' from workflow ' + workflow_name + ' has a status of ' + status);
+    console.log('Cancel requested for run id ' + runId + ' from workflow ' + workflow_name + '. Current status ' + status);
 
     // Cancel the current run
-    console.log(`Cancel current run ${runId}`);
+    console.log(`Canceling current run ${runId}`);
     const result = await octokit.rest.actions.cancelWorkflowRun({
             owner,
             repo,
@@ -39,8 +36,8 @@ async function run() {
         });
     console.log(`Cancel run ${runId} responded with status ${result.status}`);
 
-    //Poll for run status, force an exit if we have not been canceled after 1 minute
-    for(var i=0; i<12; ++i) {
+    //Poll for run status, force an exit if we have not been canceled after 1 minute. No need to break loop or check status as successful cancel causes immediate exit
+    for(var i=0; i<6; ++i) {
         console.log(i);
         await delay(5000);
         const { data: runInfo } = await octokit.rest.actions.getWorkflowRun({
@@ -48,8 +45,9 @@ async function run() {
             repo,
             run_id: runId,
         });
-        console.log('Cancel of run id ' + runId + ' from workflow ' + workflow_id + ' pending. Current run status ' + runInfo.status);
+        console.log('Cancel of run id ' + runId + ' from workflow ' + workflow_name + ' pending. Current run status ' + runInfo.status);
     }
+    console.log('Cancel of run id ' + runId + ' from workflow ' + workflow_name + ' unsuccessful. Forcing exit.');
     process.exit(11);
 
 }
