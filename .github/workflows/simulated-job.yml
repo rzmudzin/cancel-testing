@@ -74,12 +74,21 @@ jobs:
         npm --version
         npm install
         node cancel-current-workflow-run.js ${{ github.token }}
+    - name: Simulate Work
+      run: |
+        echo "Action Requested: ${{ github.event.inputs.target_action }}"
+        pwd
+        ls -lah
+        echo "Searching for script files"
+        find . -name simulate-work.sh
+        echo "Search Complete"
+        ${{github.workspace}}/.github/scripts/simulate-work.sh        
     - name: Cancel Previous Runs
       uses: rzmudzin/cancel-workflow-action@main
       with:
         all_but_latest: true
         # selected_target: ${{ github.event.inputs.target_action }}      
-    - name: Simulate Work
+    - name: Simulate More Work
       run: |
         echo "Action Requested: ${{ github.event.inputs.target_action }}"
         pwd
