@@ -1,3 +1,3 @@
 #!/bin/bash
 
-exit 11
+#exit 11
