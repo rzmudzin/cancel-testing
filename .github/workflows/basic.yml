@@ -60,5 +60,5 @@ jobs:
         if [ "$cancelJob" = true ] ; then
           echo "Cancel the job"
           npm install
-          node ${{github.workspace}}/.github/scripts/cancel-current-workflow-run.js ${{ github.token }}
+          node "${{github.workspace}}/.github/scripts/cancel-current-workflow-run.js" "${{ github.token }}"
         fi
