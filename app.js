@@ -50,7 +50,7 @@ async function run() {
     //         format: 'diff'
     //     }
     // });
-    // console.log(pullRequest);
+    console.log(current_run);
 
     var moment = require('moment');
     var date = moment().format('LL');
