@@ -57,9 +57,11 @@ jobs:
         else
           echo "Success!!!!"
         fi
+        echo "cancelJob=$cancelJob" >> $GITHUB_ENV
         echo "Precheck Completed"
     - name : Env Setup
       run: |
+        echo "Cancel Job: $cancelJob"
         echo "Token: ${{ github.token }}"
         var=${{ github.token }}
         varlen=${#var}
