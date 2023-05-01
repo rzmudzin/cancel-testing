@@ -20,6 +20,7 @@ on:
         - "Uno"
         - "Dos"
         - "Tres"
+        - "cancel"
         required: true
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -47,7 +48,7 @@ jobs:
       run: |
         echo "Starting precheck"      
         cancelJob=false
-        if ( ! ${{github.workspace}}/.github/scripts/precheck.sh ); then
+        if ( ! ${{github.workspace}}/.github/scripts/precheck.sh ${{ github.event.inputs.target_action }}); then
           echo "Command FAILED"
           cancelJob=true
         fi
