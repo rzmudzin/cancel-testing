@@ -30,16 +30,6 @@ async function run() {
     let status = current_run.status;
     console.log('Run id ' + runId + ' from workflow ' + workflow_name + ' has a status of ' + status);
 
-    //Extract a list of all the recent runs
-    const { data: { total_count, workflow_runs }, } = await octokit.rest.actions.listWorkflowRuns({
-        per_page: 100,
-        owner,
-        repo,
-        workflow_id,
-        branch,
-    });
-    console.log('Run Count: ' + total_count);
-
     // Cancel the current run
     console.log(`Cancel current run ${runId}`);
     const result = await octokit.rest.actions.cancelWorkflowRun({
