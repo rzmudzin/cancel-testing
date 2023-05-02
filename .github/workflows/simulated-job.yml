@@ -87,6 +87,7 @@ jobs:
       uses: rzmudzin/cancel-workflow-action@main
       with:
         all_but_latest: true
+        cancel_self: true
         # selected_target: ${{ github.event.inputs.target_action }}      
     - name: Simulate More Work
       run: |
